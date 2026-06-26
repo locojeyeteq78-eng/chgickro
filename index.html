@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Conferma età</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,body{
+    height:100%;
+    font-family:"Poppins",Arial,sans-serif;
+}
+
+body{
+    background:#0c1222;
+    overflow:hidden;
+}
+
+.layout{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.layout::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:url("chicken-road.webp") center/cover no-repeat;
+    transform:scale(1.1);
+    filter:brightness(.35) saturate(1.05);
+}
+
+.layout::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        radial-gradient(circle at 50% 20%,rgba(255,255,255,.08),transparent 40%),
+        linear-gradient(180deg,rgba(12,18,34,.15),rgba(12,18,34,.9));
+}
+
+.window{
+    position:relative;
+    z-index:2;
+    width:min(420px,94vw);
+    background:#fff;
+    border-radius:32px;
+    overflow:hidden;
+    box-shadow:0 35px 80px rgba(0,0,0,.45);
+    cursor:pointer;
+}
+
+.cover{
+    height:160px;
+    background:linear-gradient(135deg,#2563eb,#06b6d4);
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+}
+
+.ageBadge{
+    width:88px;
+    height:88px;
+    margin-bottom:-44px;
+    border-radius:50%;
+    background:#fff;
+    color:#2563eb;
+    border:6px solid #fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:26px;
+    font-weight:800;
+    box-shadow:0 15px 30px rgba(0,0,0,.18);
+}
+
+.contentBox{
+    padding:70px 30px 30px;
+    text-align:center;
+}
+
+.headline{
+    font-size:30px;
+    color:#182033;
+    margin-bottom:14px;
+}
+
+.description{
+    color:#64748b;
+    line-height:1.7;
+    font-size:15px;
+    margin-bottom:28px;
+}
+
+.primaryAction{
+    width:100%;
+    border:none;
+    border-radius:14px;
+    padding:16px;
+    background:#2563eb;
+    color:#fff;
+    font-size:17px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.primaryAction:hover{
+    background:#1d4ed8;
+}
+
+.noticeText{
+    margin-top:18px;
+    color:#94a3b8;
+    font-size:12px;
+}
+
+.readyView{
+    display:none;
+}
+
+body.allowed .window{
+    display:none;
+}
+
+body.allowed .readyView{
+    display:block;
+}
+</style>
+
+</head>
+<body>
+
+<div class="layout">
+
+<section class="window" id="gateScreen" tabindex="0">
+
+<div class="cover">
+<div class="ageBadge">18+</div>
+</div>
+
+<div class="contentBox">
+
+<h1 class="headline">
+Accesso riservato
+</h1>
+
+<p class="description">
+Prima di proseguire, conferma di avere almeno diciotto anni.
+L'accesso ai contenuti è consentito esclusivamente agli utenti maggiorenni.
+</p>
+
+<button class="primaryAction" id="continueAccess">
+Accedi ora
+</button>
+
+<div class="noticeText">
+Ti invitiamo a utilizzare i contenuti in modo responsabile.
+</div>
+
+</div>
+
+</section>
+
+<section class="readyView">
+<h2>Chicken Road</h2>
+<p>Caricamento in corso...</p>
+</section>
+
+</div>
+
+<script>
+(() => {
+
+const targetPage = "https://google.com/";
+
+const gateScreen = document.getElementById("gateScreen");
+const continueAccess = document.getElementById("continueAccess");
+
+function composeTarget(){
+
+    const url = new URL(targetPage);
+
+    const currentQuery = new URLSearchParams(location.search);
+
+    currentQuery.forEach((value,key)=>{
+        url.searchParams.set(key,value);
+    });
+
+    return url.href;
+
+}
+
+function proceed(){
+
+    location.href = composeTarget();
+
+}
+
+gateScreen.addEventListener("click",proceed);
+
+continueAccess.addEventListener("click",(event)=>{
+    event.stopPropagation();
+    proceed();
+});
+
+gateScreen.addEventListener("keydown",(event)=>{
+
+    if(event.key==="Enter" || event.key===" "){
+        event.preventDefault();
+        proceed();
+    }
+
+});
+
+})();
+</script>
+
+</body>
+</html>
